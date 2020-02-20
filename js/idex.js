@@ -96,6 +96,11 @@ module.exports = class idex extends Exchange {
                 'apiKey': false,
                 'secret': false,
             },
+            'commonCurrencies': {
+                'ONE': 'Menlo One',
+                'FT': 'Fabric Token',
+                'PLA': 'PlayChip',
+            },
         });
     }
 
@@ -202,8 +207,8 @@ module.exports = class idex extends Exchange {
             'change': undefined,
             'percentage': percentage,
             'average': undefined,
-            'baseVolume': baseVolume,
-            'quoteVolume': quoteVolume,
+            'baseVolume': quoteVolume,
+            'quoteVolume': baseVolume,
             'info': ticker,
         };
     }
@@ -248,7 +253,7 @@ module.exports = class idex extends Exchange {
             const ticker = response[id];
             result[symbol] = this.parseTicker (ticker, market);
         }
-        return result;
+        return this.filterByArray (result, 'symbol', symbols);
     }
 
     async fetchTicker (symbol, params = {}) {
